@@ -1,11 +1,26 @@
 Trie = function(){
   this.characters = {};
+  this.isWord = false;
 };
 
 Trie.prototype.learn = function(word, index){
   // This function should add the given word,
   // starting from the given index,
   // to this Trie.
+  index = index || 0
+  var char = word[index];
+  if(this.characters[char]){
+    this.character[char].learn(word, index+1)
+  }
+  else {
+    if(index === word.length - 1){
+      this.isWord = true;
+    }else {    
+      this.characters[char] = new Trie();
+      this.characters[char].learn(word, index+1);
+    }
+  }
+
 
   // It will be recursive.  It will tell
   // the correct child of this Trie to learn the word
