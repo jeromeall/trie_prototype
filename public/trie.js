@@ -7,17 +7,20 @@ Trie.prototype.learn = function(word, index){
   // This function should add the given word,
   // starting from the given index,
   // to this Trie.
-  index = index || 0
-  var char = word[index];
-  if(this.characters[char]){
-    this.character[char].learn(word, index+1)
+  index = index || 0;
+  
+  
+  var thisChar = this.characters[word[index]];
+
+  if(thisChar){
+    thisChar.learn(word, index+1);
   }
   else {
-    if(index === word.length - 1){
+    if(index === word.length){
       this.isWord = true;
-    }else {    
-      this.characters[char] = new Trie();
-      this.characters[char].learn(word, index+1);
+    }else{
+      this.characters[word[index]] = new Trie();
+      this.characters[word[index]].learn(word, index+1);
     }
   }
 
