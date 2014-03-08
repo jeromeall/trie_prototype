@@ -23,8 +23,6 @@ Trie.prototype.learn = function(word, index){
       this.characters[word[index]].learn(word, index+1);
     }
   }
-
-
   // It will be recursive.  It will tell
   // the correct child of this Trie to learn the word
   // starting from a later index.
@@ -46,7 +44,17 @@ Trie.prototype.getWords = function(words, currentWord){
 Trie.prototype.find = function(word, index){
   // This function will return the node in the trie
   // which corresponds to the end of the passed in word.
-
+  index = index || 0;
+  var thisChar = this.characters[word[index]];
+  if(thisChar){
+    if(index === word.length - 1){
+      return thisChar;
+    }else{
+      thisChar.find(word, index+1);
+    }
+  }else{
+    return false;
+  }
   // Be sure to consider what happens if the word is not in this Trie.
 };
 
