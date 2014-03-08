@@ -3,6 +3,8 @@ Trie = function(){
   this.isWord = false;
 };
 
+
+
 Trie.prototype.learn = function(word, index){
   // This function should add the given word,
   // starting from the given index,
@@ -34,32 +36,59 @@ Trie.prototype.learn = function(word, index){
   // so that the words can be reconstructed later.
 };
 
+var tree = new Trie();
+tree.learn("hi");
+tree.learn("he");
+tree.learn("hello");
+tree.learn("awesome");
+tree.learn("falcon");
+tree.learn("rancor");
+tree.learn("skywalker");
+
 Trie.prototype.getWords = function(words, currentWord){
   // This function will return all the words which are
   // contained in this Trie.
   // it will use currentWord as a prefix,
   // since a Trie doesn't know about its parents.
+  words = words || [];
+  currentWord = currentWord || "";
+  if(this.isWord){
+    words.push(currentWord);
+  }
+  for(var currentLetter in this.characters){
+    var newWord = currentWord + currentLetter;
+    this.characters[currentLetter].getWords(words, newWord);
+  }
+  return words;
+
 };
 
 Trie.prototype.find = function(word, index){
   // This function will return the node in the trie
   // which corresponds to the end of the passed in word.
+  // Be sure to consider what happens if the word is not in this Trie.
+
+word = word || "";
   index = index || 0;
-  var thisChar = this.characters[word[index]];
-  if(thisChar){
-    if(index === word.length - 1){
-      return thisChar;
-    }else{
-      thisChar.find(word, index+1);
-    }
-  }else{
+  var node = word[index];
+
+  if(this.characters[node]) {
+    return this.characters[node].find(word, index + 1);
+  } else if (index === word.length){
+    return this;
+  } else {
     return false;
   }
-  // Be sure to consider what happens if the word is not in this Trie.
 };
 
 Trie.prototype.autoComplete = function(prefix){
   // This function will return all completions 
   // for a given prefix.
   // It should use find and getWords.
+  var word = this.find(prefix);
+  if(word){
+    return word.getWords([], prefix);
+  }else {
+    return [];
+  }
 };
