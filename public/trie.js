@@ -68,7 +68,7 @@ Trie.prototype.find = function(word, index){
   // which corresponds to the end of the passed in word.
   // Be sure to consider what happens if the word is not in this Trie.
 
-word = word || "";
+  word = word || "";
   index = index || 0;
   var node = word[index];
 
@@ -86,9 +86,6 @@ Trie.prototype.autoComplete = function(prefix){
   // for a given prefix.
   // It should use find and getWords.
   var word = this.find(prefix);
-  if(word){
-    return word.getWords([], prefix);
-  }else {
-    return [];
-  }
+  if (!word){return [];}
+  return word.getWords([],prefix);
 };

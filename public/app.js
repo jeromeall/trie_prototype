@@ -35,7 +35,7 @@ App.Routers.Main = Backbone.Router.extend({
 App.Views.Search = Backbone.View.extend({
   id: "search_bar",
   events: {
-    "keypress search_bar" : "searchFunction"
+    "keypress #search_bar" : "searchFunction"
   },
   template: function(){ return "<form> <input type='text' id='search_bar'></form>";},
   render: function(){
@@ -43,7 +43,8 @@ App.Views.Search = Backbone.View.extend({
     return this;
   },
   searchFunction: function(){
-
+    var prefix = $("#seach_bar").val();
+    App.autocompleter.complete(prefix);
   }
 
 });
