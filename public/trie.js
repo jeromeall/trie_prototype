@@ -86,6 +86,11 @@ Trie.prototype.autoComplete = function(prefix){
   // for a given prefix.
   // It should use find and getWords.
   var word = this.find(prefix);
-  if (!word){return [];}
-  return word.getWords([],prefix);
+  if(word){
+    var result = word.getWords([], prefix);
+    console.log(result);
+    return word.getWords([], prefix);
+  }else {
+    return [];
+  }
 };

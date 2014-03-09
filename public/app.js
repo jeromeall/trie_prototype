@@ -32,19 +32,31 @@ App.Routers.Main = Backbone.Router.extend({
   }
 });
 
+
+
 App.Views.Search = Backbone.View.extend({
-  id: "search_bar",
+  id: "search",
   events: {
-    "keypress #search_bar" : "searchFunction"
+    "keyup #search_bar" : "searchFunction"
   },
-  template: function(){ return "<form> <input type='text' id='search_bar'></form>";},
+  // template: function(){ return "<form> <input type='text' id='search_bar'></form>";},
+
   render: function(){
-    this.$el.html(this.template());
+    var source = "<form><input type='text' id='search_bar'></form>";
+    var template = Handlebars.compile(source);
+    this.$el.html(template);
     return this;
   },
   searchFunction: function(){
-    var prefix = $("#seach_bar").val();
-    App.autocompleter.complete(prefix);
+    var word = $("#search_bar").val();
+    var results = App.autocompleter.complete(word);
+    var list = '';
+    results.forEach(function(item){
+      var str = item;
+      var res = str.replace(' ', '_');
+      list += '<li><a href="https://en.wikipedia.org/wiki/' +res+'">' + item + '</li>';
+    });
+    $("#titles").html(list);
   }
 
 });
@@ -52,7 +64,7 @@ App.Views.Search = Backbone.View.extend({
 
 
 
-App.Views.Results = Backbone.View.extend({
-  id: "results",
-  template: function(){return "<>";}
-});
+// App.Views.Results = Backbone.View.extend({
+//   id: "results",
+//   template: function(){return "<>";}
+// });
