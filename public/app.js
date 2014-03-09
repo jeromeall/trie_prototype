@@ -52,9 +52,10 @@ App.Views.Search = Backbone.View.extend({
     var results = App.autocompleter.complete(word);
     var list = '';
     results.forEach(function(item){
-      var str = item;
-      var res = str.replace(' ', '_');
-      list += '<li><a href="https://en.wikipedia.org/wiki/' +res+'">' + item + '</li>';
+      var res = item.replace(' ', '_');
+      var context = {result: res, title: item};
+      var source = "<li><a href=\"https://en.wikipedia.org/wiki/{{result}}\"> {{title}} </li>";
+      list +=  Handlebars.compile(source, context);
     });
     $("#titles").html(list);
   }
