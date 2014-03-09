@@ -33,13 +33,12 @@ App.Routers.Main = Backbone.Router.extend({
 });
 
 
-
+// View for Search Bar
 App.Views.Search = Backbone.View.extend({
   id: "search",
   events: {
     "keyup #search_bar" : "searchFunction"
   },
-  // template: function(){ return "<form> <input type='text' id='search_bar'></form>";},
 
   render: function(){
     var source = "<form><input type='text' id='search_bar'></form>";
@@ -53,11 +52,10 @@ App.Views.Search = Backbone.View.extend({
     var list = '';
     results.forEach(function(item){
       var res = item.replace(' ', '_');
-      var context = {result: res, title: item};
-      var source = "<li><a href=\"https://en.wikipedia.org/wiki/{{result}}\"> {{title}} </li>";
-      list +=  Handlebars.compile(source, context);
+      list += '<li><a href="https://en.wikipedia.org/wiki/' +res+'">' + item + '</li>';
     });
-    $("#titles").html(list);
+    var resultsView = new App.Views.Results();
+    resultsView.showResults(list);
   }
 
 });
@@ -65,7 +63,11 @@ App.Views.Search = Backbone.View.extend({
 
 
 
-// App.Views.Results = Backbone.View.extend({
-//   id: "results",
-//   template: function(){return "<>";}
-// });
+// View to show results
+App.Views.Results = Backbone.View.extend({
+
+  showResults: function(results){
+    var resultsHTML = Handlebars.compile(results);
+    $("#titles").html(resultsHTML);
+  }
+});
