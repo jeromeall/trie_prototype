@@ -13,23 +13,33 @@ window.App = {
     ws.onmessage = function(m) { 
       App.autocompleter.add(m.data); 
     };
-
   }
 };
 
 $(document).ready(function(){
   App.initialize();
-});
+}); 
 
 
 App.Routers.Main = Backbone.Router.extend({
-  routes: {
-    "": "index",
-  },
-  index: function(){
-    var view = new App.Views.Search();
-    $("#container").html(view.render().el);
-  }
+  search: function(){
+    // if(window.location.pathname !== "/"){
+      return window.location.pathname;
+  //}
+},
+
+routes: {
+  "": "index",
+  ":search":"urlSearch(:search)"
+},
+index: function(){
+  var view = new App.Views.Search();
+  $("#container").html(view.render().el);
+  console.log(App.autocompleter);
+}
+// urlSearch: function(param){
+
+// }
 });
 
 
@@ -37,11 +47,11 @@ App.Routers.Main = Backbone.Router.extend({
 App.Views.Search = Backbone.View.extend({
   id: "search",
   events: {
-    "keyup #search_bar" : "searchFunction"
+    "keyup #search_bar" : "searchFunction",
   },
 
   render: function(){
-    var source = "<form><input type='text' id='search_bar'></form>";
+    var source = "<form><input type='text' id='search_bar' value='" + this.search() + "'></form>";
     var template = Handlebars.compile(source);
     this.$el.html(template);
     return this;
@@ -56,8 +66,17 @@ App.Views.Search = Backbone.View.extend({
     });
     var resultsView = new App.Views.Results();
     resultsView.showResults(list);
+  },
+  search: function(){
+    if(window.location.pathname !== "/"){
+      return window.location.pathname.replace("/","");
+    }else{
+      return "";
+    }
+  },
+  urlSearch: function(){
+    console.log($("#search_bar").attr('value'));
   }
-
 });
 
 
